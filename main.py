@@ -1,19 +1,21 @@
 import cv2 as cv
 
-def showImage(path):
-    img = cv.imread(path, cv.COLOR_BGR2GRAY)
-    cv.namedWindow("Display window", cv.WINDOW_KEEPRATIO)
+def showImage(path, image_color, window_method):
+    img = cv.imread(path, image_color)
+    cv.namedWindow("Display window", window_method)
     cv.imshow("Display window", img)
     cv.waitKey(0)
     cv.destroyAllWindows()
 
-def showVideo(path):
+def showVideo(path, color_converter, window_method):
     cap = cv.VideoCapture(path, cv.CAP_ANY)
+    cv.namedWindow("Display window", window_method)
     while True:
         ret, frame = cap.read()
         if not(ret):
             break
-        cv.imshow('frame', frame)
+        converted_frame = cv.cvtColor(frame, color_converter)
+        cv.imshow('Display window', converted_frame)
         if (cv.waitKey(1)&0xFF == 27):
             break
     cap.release()
@@ -38,3 +40,5 @@ def writeVideo(path_from, path_to):
 
     cap.release()
     cv.destroyAllWindows()
+
+showVideo("media/earth.webm", cv.COLOR_BGR2RGB, cv.WINDOW_FULLSCREEN)
