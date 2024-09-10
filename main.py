@@ -41,4 +41,20 @@ def writeVideo(path_from, path_to):
     cap.release()
     cv.destroyAllWindows()
 
-showVideo("media/earth.webm", cv.COLOR_BGR2RGB, cv.WINDOW_FULLSCREEN)
+def show_two_video(path, converter):
+    cap = cv.VideoCapture(path, cv.CAP_ANY)
+    cv.namedWindow("Display1 window", cv.WINDOW_KEEPRATIO)
+    cv.moveWindow("Display1 window", 0, 0)
+    cv.namedWindow("Display2 window", cv.WINDOW_KEEPRATIO)
+    cv.moveWindow("Display2 window", 640, 0)
+    while True:
+        ret, frame = cap.read()
+        if not(ret):
+            break
+        converted_frame = cv.cvtColor(frame, converter)
+        cv.imshow('Display1 window', frame)
+        cv.imshow('Display2 window', converted_frame)
+        if (cv.waitKey(1)&0xFF == 27):
+            break
+    cap.release()
+    cv.destroyAllWindows()
